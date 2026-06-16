@@ -54,26 +54,19 @@ export default function CanvasPanel() {
     [updateSnippetPosition]
   );
 
-  // Compact flow layout: snap to grid with minimal spacing
+  // Compact flow layout: single row, infinite horizontal scroll
   const handleCompactLayout = useCallback(() => {
     const startX = 60;
-    const startY = 60;
-    const gapX = 20;
-    const gapY = 20;
-    const cardW = 280;
-    const cardH = 160;
-    const maxCols = 3;
+    const startY = 80;
+    const gap = 24;
 
-    // Sort snippets by timestamp (oldest first) for stable ordering
     const sorted = [...snippets].sort((a, b) => a.timestamp - b.timestamp);
 
     sorted.forEach((snippet, index) => {
-      const col = index % maxCols;
-      const row = Math.floor(index / maxCols);
       updateSnippetPosition(
         snippet.id,
-        startX + col * (cardW + gapX),
-        startY + row * (cardH + gapY)
+        startX + index * (300 + gap),
+        startY
       );
     });
   }, [snippets, updateSnippetPosition]);
