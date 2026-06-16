@@ -164,13 +164,19 @@ export default function SnippetNode({ id: nodeId, data }: SnippetNodeProps) {
   return (
     <div
       id={`node-snippet-${snippet.id}`}
-      className="relative group w-[300px] h-auto bg-slate-900 border border-slate-800/80 rounded-xl shadow-xl transition-all duration-300 pointer-events-auto overflow-visible hover:border-slate-700/80 hover:shadow-2xl"
+      className="relative group w-[300px] h-auto bg-slate-900 border border-slate-800/80 rounded-xl shadow-xl pointer-events-auto overflow-visible hover:border-slate-700/80 hover:shadow-2xl"
     >
       <NodeResizer
         minWidth={220}
         minHeight={120}
-        handleStyle={{ width: 8, height: 8, borderRadius: 2, backgroundColor: '#475569', border: '1px solid #94a3b8' }}
-        lineStyle={{ borderColor: '#475569' }}
+        handleStyle={{
+          width: 14,
+          height: 14,
+          borderRadius: 3,
+          backgroundColor: '#64748b',
+          border: '2px solid #cbd5e1',
+        }}
+        lineStyle={{ borderColor: 'transparent' }}
       />
       <Handle type="target" position={Position.Top} className="opacity-0 pointer-events-none" />
 
