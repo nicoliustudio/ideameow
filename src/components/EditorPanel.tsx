@@ -5,21 +5,17 @@ import ImageExtension from '@tiptap/extension-image';
 import {
   Bold,
   Italic,
-  Strikethrough,
   Heading1,
   Heading2,
   Quote,
   List,
   ListOrdered,
-  Minus,
   Undo2,
   Redo2,
   Download,
-  Check,
-  Sparkles,
+  Lock,
   Image,
-  PanelRightClose,
-  FileText
+  PanelRightClose
 } from 'lucide-react';
 import { useStore } from '../store';
 
@@ -274,43 +270,30 @@ export default function EditorPanel({ onCollapse }: { onCollapse?: () => void })
   return (
     <div className="w-full h-full flex flex-col bg-white border-r border-slate-200/80 shadow-xl z-20 overflow-hidden text-slate-700">
       {/* Editor Header Bar */}
-      <div className="h-14 border-b border-slate-100 bg-slate-50/80 px-4 flex items-center justify-between shrink-0 select-none">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-blue-500/10 flex items-center justify-center">
-            <Sparkles className="text-blue-600" size={13} />
-          </div>
-          <div>
-            <h2 className="font-sans font-bold text-sm text-slate-800 tracking-tight">
-              剧本创作编辑器
-            </h2>
-          </div>
+      <div className="h-11 border-b border-slate-100 bg-slate-50/80 px-4 flex items-center justify-between shrink-0 select-none">
+        <div className="flex items-center gap-2.5">
+          <h2 className="font-sans font-bold text-sm text-slate-800 tracking-tight">
+            剧本草稿
+          </h2>
+          <span className={`text-[11px] font-sans font-medium transition-opacity duration-300 flex items-center gap-1 text-emerald-600 ${isSavedTagVisible ? 'opacity-100' : 'opacity-0'}`}>
+            <Lock size={11} className="stroke-[2.5]" />
+            <span>已本地保存</span>
+          </span>
         </div>
 
-        {/* Sync indicators + export + collapse */}
-        <div className="flex items-center gap-3">
-          <span className={`text-[11px] font-sans font-medium transition-opacity duration-300 flex items-center gap-1 text-emerald-600 ${isSavedTagVisible ? 'opacity-100' : 'opacity-0'}`}>
-            <Check size={12} className="stroke-[3]" />
-            <span>已保存至本地</span>
-          </span>
+        <div className="flex items-center gap-2">
           <button
             onClick={handleExportMarkdown}
-            className="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold py-1.5 px-3 rounded-full transition-all cursor-pointer shadow-sm shadow-slate-900/10"
+            className="flex items-center gap-1 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold py-1.5 px-3 rounded-full transition-all cursor-pointer"
           >
-            <Download size={13} />
-            <span>导出 MD</span>
-          </button>
-          <button
-            onClick={handleExportWord}
-            className="flex items-center gap-1.5 bg-white hover:bg-blue-50 text-blue-700 text-xs font-semibold py-1.5 px-3 rounded-full transition-all cursor-pointer border border-blue-200 shadow-sm"
-          >
-            <FileText size={13} />
-            <span>导出 Word</span>
+            <Download size={12} />
+            <span>导出</span>
           </button>
           {onCollapse && (
             <button
               onClick={onCollapse}
               className="p-1.5 hover:bg-slate-200 text-slate-400 hover:text-slate-600 rounded-lg transition-colors cursor-pointer"
-              title="收起编辑器，沉浸式浏览画布"
+              title="收起编辑器"
             >
               <PanelRightClose size={14} />
             </button>
@@ -319,85 +302,69 @@ export default function EditorPanel({ onCollapse }: { onCollapse?: () => void })
       </div>
 
       {/* Formatting Commands Ribbon */}
-      <div className="h-12 border-b border-slate-100 flex items-center px-4 gap-1 bg-slate-50/50 shrink-0 select-none">
+      <div className="h-10 border-b border-slate-100 flex items-center px-4 gap-0.5 bg-slate-50/50 shrink-0 select-none">
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
-          className={`p-1 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('bold') ? 'bg-slate-200 text-slate-900 font-bold' : ''}`}
-          title="加粗 (Ctrl+B)"
+          className={`p-1.5 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('bold') ? 'bg-slate-200 text-slate-900 font-bold' : ''}`}
+          title="加粗"
         >
-          <Bold size={15} />
+          <Bold size={14} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={`p-1 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('italic') ? 'bg-slate-200 text-slate-900 italic' : ''}`}
-          title="斜体 (Ctrl+I)"
+          className={`p-1.5 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('italic') ? 'bg-slate-200 text-slate-900 italic' : ''}`}
+          title="斜体"
         >
-          <Italic size={15} />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          className={`p-1 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('strike') ? 'bg-slate-200 text-slate-900' : ''}`}
-          title="删除线"
-        >
-          <Strikethrough size={15} />
+          <Italic size={14} />
         </button>
 
-        <div className="w-px h-4 bg-slate-200 mx-1.5" />
+        <div className="w-px h-4 bg-slate-200 mx-1" />
 
         <button
           onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          className={`p-1 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('heading', { level: 1 }) ? 'bg-slate-200 text-slate-900' : ''}`}
+          className={`p-1.5 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('heading', { level: 1 }) ? 'bg-slate-200 text-slate-900' : ''}`}
           title="一级标题"
         >
-          <Heading1 size={15} />
+          <Heading1 size={14} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          className={`p-1 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('heading', { level: 2 }) ? 'bg-slate-200 text-slate-900' : ''}`}
+          className={`p-1.5 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('heading', { level: 2 }) ? 'bg-slate-200 text-slate-900' : ''}`}
           title="二级标题"
         >
-          <Heading2 size={15} />
+          <Heading2 size={14} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={`p-1 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('blockquote') ? 'bg-slate-200 text-slate-900' : ''}`}
-          title="引用文本"
+          className={`p-1.5 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('blockquote') ? 'bg-slate-200 text-slate-900' : ''}`}
+          title="引用"
         >
-          <Quote size={15} />
+          <Quote size={14} />
         </button>
 
-        <div className="w-px h-4 bg-slate-200 mx-1.5" />
+        <div className="w-px h-4 bg-slate-200 mx-1" />
 
         <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={`p-1 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('bulletList') ? 'bg-slate-200 text-slate-900' : ''}`}
+          className={`p-1.5 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('bulletList') ? 'bg-slate-200 text-slate-900' : ''}`}
           title="无序列表"
         >
-          <List size={15} />
+          <List size={14} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={`p-1 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('orderedList') ? 'bg-slate-200 text-slate-900' : ''}`}
+          className={`p-1.5 text-slate-500 hover:bg-slate-200 rounded transition-all ${editor.isActive('orderedList') ? 'bg-slate-200 text-slate-900' : ''}`}
           title="有序列表"
         >
-          <ListOrdered size={15} />
+          <ListOrdered size={14} />
         </button>
-        <button
-          onClick={() => editor.chain().focus().setHorizontalRule().run()}
-          className="p-1 text-slate-500 hover:bg-slate-200 rounded transition-all"
-          title="水平分割线"
-        >
-          <Minus size={15} />
-        </button>
-
-        <div className="w-px h-4 bg-slate-200 mx-1.5" />
 
         <button
           onClick={handleInsertImage}
-          className="p-1 text-slate-500 hover:bg-slate-200 rounded transition-all"
+          className="p-1.5 text-slate-500 hover:bg-slate-200 rounded transition-all"
           title="插入图片"
         >
-          <Image size={15} />
+          <Image size={14} />
         </button>
         <input
           ref={fileInputRef}
@@ -407,23 +374,23 @@ export default function EditorPanel({ onCollapse }: { onCollapse?: () => void })
           className="hidden"
         />
 
-        <div className="w-px h-4 bg-slate-200 mx-1.5 ml-auto" />
+        <div className="flex-1" />
 
         <button
           onClick={() => editor.chain().focus().undo().run()}
-          className="p-1 text-slate-500 hover:bg-slate-200 rounded transition-all disabled:opacity-30"
+          className="p-1.5 text-slate-500 hover:bg-slate-200 rounded transition-all disabled:opacity-30"
           disabled={!editor.can().undo()}
-          title="撤销操作 (Ctrl+Z)"
+          title="撤销"
         >
-          <Undo2 size={15} />
+          <Undo2 size={14} />
         </button>
         <button
           onClick={() => editor.chain().focus().redo().run()}
-          className="p-1 text-slate-500 hover:bg-slate-200 rounded transition-all disabled:opacity-30"
+          className="p-1.5 text-slate-500 hover:bg-slate-200 rounded transition-all disabled:opacity-30"
           disabled={!editor.can().redo()}
-          title="恢复操作 (Ctrl+Y)"
+          title="恢复"
         >
-          <Redo2 size={15} />
+          <Redo2 size={14} />
         </button>
       </div>
 
@@ -442,10 +409,9 @@ export default function EditorPanel({ onCollapse }: { onCollapse?: () => void })
         </div>
       </div>
 
-      {/* Drop zone visual instruction banner in white card footer style */}
-      <div className="h-8 bg-slate-50 border-t border-slate-100 flex items-center px-4 justify-between text-[10px] text-slate-400 font-sans select-none tracking-wide">
-        <span className="italic">💡 拖拽卡片至白色纸张内完成汇编</span>
-        <span className="font-semibold uppercase tracking-wider text-[9px]">Tiptap 核心级编辑器已连接</span>
+      {/* Bottom hint */}
+      <div className="h-7 bg-slate-50 border-t border-slate-100 flex items-center px-4 text-[10px] text-slate-400 font-sans select-none tracking-wide">
+        <span>把右侧灵感拖进这里，开始拼出你的草稿</span>
       </div>
     </div>
   );

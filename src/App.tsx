@@ -2,15 +2,19 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import EditorPanel from './components/EditorPanel';
 import CanvasPanel from './components/CanvasPanel';
 import MessageListener from './components/MessageListener';
-import { Sparkles, X, Chrome, PanelLeftClose, PanelLeft, GripVertical, Settings, Plus, Trash2, Globe } from 'lucide-react';
+import SupportModal from './components/SupportModal';
+import { Sparkles, X, Chrome, PanelLeft, GripVertical, Settings, Globe, Github, Fish } from 'lucide-react';
+import { useStore } from './store';
 
 export default function App() {
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isSupportOpen, setIsSupportOpen] = useState(false);
   const [editorCollapsed, setEditorCollapsed] = useState(false);
   const [editorWidth, setEditorWidth] = useState(35); // percentage
   const containerRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const isExtensionConnected = useStore((s) => s.isExtensionConnected);
 
   const handleDownloadExtension = () => {
     alert(
@@ -55,48 +59,76 @@ export default function App() {
       <MessageListener />
 
       {/* Global Application Nav Header */}
-      <header className="h-14 flex items-center justify-between px-6 bg-slate-900/90 border-b border-slate-800/80 shrink-0 select-none z-30 backdrop-blur-md">
+      <header className="h-12 flex items-center justify-between px-5 bg-slate-900/95 border-b border-slate-800/60 shrink-0 select-none z-30 backdrop-blur-md">
         <div className="flex items-center gap-3">
-          {/* IM Logo */}
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
-            <span className="text-white font-black text-[13px] tracking-tighter leading-none select-none">IM</span>
+          {/* Logo */}
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
+            <span className="text-white font-black text-[11px] tracking-tighter leading-none select-none">IM</span>
           </div>
-          <div>
-            <h1 className="text-base font-bold tracking-tight text-white flex items-center gap-2 leading-none">
-              IdeaMeow
-              <span className="text-slate-400 font-normal text-[10px] pl-1.5 border-l border-slate-700">灵感喵</span>
-            </h1>
-          </div>
+          <h1 className="text-sm font-bold tracking-tight text-white flex items-center gap-2 leading-none">
+            IdeaMeow
+            <span className="text-slate-500 font-normal text-[10px]">灵感喵</span>
+          </h1>
+          <span className="hidden sm:inline text-[10px] text-slate-500 font-medium pl-2 border-l border-slate-700/50">
+            本地优先 · 不上传正文
+          </span>
         </div>
 
-        <div className="flex items-center gap-6">
-          <div className="hidden sm:flex items-center gap-2 text-xs text-slate-400 font-medium">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-md shadow-emerald-500/50 animate-pulse"></span>
-            <span>灵感收集插件已就绪</span>
+        <div className="flex items-center gap-2">
+          {/* Plugin status */}
+          <div
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all ${
+              isExtensionConnected
+                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+            }`}
+          >
+            <span className={`w-1.5 h-1.5 rounded-full ${isExtensionConnected ? 'bg-emerald-500' : 'bg-amber-500 animate-pulse'}`} />
+            <span>{isExtensionConnected ? '插件已连接' : '插件未连接'}</span>
           </div>
 
+          {/* 获取插件 - 主按钮 */}
+          <button
+            onClick={handleDownloadExtension}
+            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-full text-[11px] font-semibold text-white transition-all cursor-pointer"
+          >
+            获取插件
+          </button>
+
+          {/* 喂点猫粮 - 次按钮 */}
+          <button
+            onClick={() => setIsSupportOpen(true)}
+            className="px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 hover:text-amber-200 rounded-full text-[11px] font-semibold transition-all border border-amber-400/20 cursor-pointer flex items-center gap-1"
+          >
+            <Fish size={12} />
+            <span>喂点猫粮</span>
+          </button>
+
+          {/* Ghost buttons */}
           <button
             onClick={() => setIsSettingsOpen(true)}
-            className="px-3 py-1.5 bg-slate-800/80 hover:bg-slate-700/80 rounded-full text-xs font-semibold tracking-wide transition-all border border-slate-700/60 text-slate-200 cursor-pointer flex items-center gap-1"
+            className="px-2.5 py-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 rounded-full text-[11px] font-medium transition-all cursor-pointer flex items-center gap-1"
           >
-            <Settings size={12} />
-            <span>网址设置</span>
+            <Settings size={11} />
+            <span>设置</span>
           </button>
 
           <button
             onClick={() => setIsGuideOpen(true)}
-            className="px-3 py-1.5 bg-slate-800/80 hover:bg-slate-700/80 rounded-full text-xs font-semibold tracking-wide transition-all border border-slate-700/60 text-slate-200 cursor-pointer"
+            className="px-2.5 py-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 rounded-full text-[11px] font-medium transition-all cursor-pointer"
           >
-            插件安装手册
+            手册
           </button>
 
-          <button
-            onClick={handleDownloadExtension}
-            className="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-full text-xs font-semibold tracking-wide text-white transition-all shadow-md shadow-blue-600/10 cursor-pointer"
-            title="Download/Learn how to load files as Chrome extension"
+          <a
+            href="https://github.com/nicoliustudio/ideameow"
+            target="_blank"
+            rel="noreferrer"
+            className="px-2.5 py-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 rounded-full text-[11px] font-medium transition-all cursor-pointer flex items-center gap-1 no-underline"
           >
-            获取 Chrome 插件
-          </button>
+            <Github size={11} />
+            <span>GitHub</span>
+          </a>
         </div>
       </header>
 
@@ -311,6 +343,9 @@ export default function App() {
             </div>
           </div>
         )}
+
+        {/* Support Modal */}
+        <SupportModal isOpen={isSupportOpen} onClose={() => setIsSupportOpen(false)} />
       </div>
     </div>
   );

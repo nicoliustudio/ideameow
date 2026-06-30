@@ -7,7 +7,7 @@
   --font-mono: "SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
-/* Custom Scrollbar Styles with Apple style premium feel */
+/* Custom Scrollbar Styles */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -16,11 +16,11 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.3);
+  background: rgba(148, 163, 184, 0.2);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.5);
+  background: rgba(148, 163, 184, 0.35);
 }
 
 /* ProseMirror WYSIWYG Editor Styles */
@@ -61,16 +61,15 @@
 }
 
 .ProseMirror blockquote {
-  border-left: 4px solid #3b82f6;
+  border-left: 3px solid #3b82f6;
   padding-left: 16px;
   font-style: italic;
   color: #1e3a8a;
-  background-color: #eff6ff;
+  background: #eff6ff;
   margin: 18px 0;
   padding-top: 10px;
   padding-bottom: 10px;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
+  border-radius: 0 6px 6px 0;
 }
 
 .ProseMirror blockquote p {
@@ -104,7 +103,6 @@
   height: auto;
   border-radius: 8px;
   margin: 12px 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   cursor: pointer;
 }
 
